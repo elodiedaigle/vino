@@ -2,6 +2,8 @@
 @section('title', 'caveo')
 @section('content')
 
+<script type="module" src="{{ asset('js/filtre.js') }}"></script>
+
 <div class="m-4">
     <!-- 
         Le formulaire envoie une requête GET vers l'URL actuelle.
@@ -27,6 +29,117 @@
             <img src="{{ asset('images/recherche/recherche-blanc.svg') }}" alt="" class="w-10 h-10">
         </button>
     </form>
+
+    <div class="m-4">
+        <button id="openFilters" class="bg-[#A83248] text-white px-4 py-3 rounded w-full font-semibold">
+            Filtres
+        </button>
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Paneaux ouvert au-dessus du contenue  -->
+    <div id="filterPanel" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[90vh] flex flex-col translate-y-full transition-transform duration-300">
+
+        <!-- Entête des filtres -->
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-lg font-bold">Filtres</h2>
+            <button id="closeFilters" class="text-xl">✕</button>
+        </div>
+
+        <!-- Contenu scrollable section des choix de filtres -->
+        <div class="overflow-y-auto p-4 flex flex-col gap-6">
+
+            <form method="GET" action="{{ url()->current() }}" class="flex flex-col gap-6">
+
+                <!-- TRI -->
+                <div>
+                    <label class="font-semibold block mb-2">Trier</label>
+                    <div class="flex flex-col gap-2">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="tri_nom" value="" {{ request('tri_nom') == '' ? 'checked' : '' }}>
+                            Ne pas trier
+                        </label>
+
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="tri_nom" value="asc" {{ request('tri_nom') == 'asc' ? 'checked' : '' }}>
+                            A → Z
+                        </label>
+
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="tri_nom" value="desc" {{ request('tri_nom') == 'desc' ? 'checked' : '' }}>
+                            Z → A
+                        </label>
+                    </div>
+                </div>
+
+                <!-- TYPE -->
+                <div>
+                    <label class="font-semibold block mb-2">Type</label>
+                    <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                        @foreach($types as $type)
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="types[]" value="{{ $type }}" {{ in_array($type, request('types', [])) ? 'checked' : '' }}>
+                                {{ $type }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- PAYS -->
+                <div>
+                    <label class="font-semibold block mb-2">Pays</label>
+                    <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                        @foreach($pays as $p)
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="pays[]" value="{{ $p }}" {{ in_array($p, request('pays', [])) ? 'checked' : '' }}>
+                                {{ $p }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- FORMAT -->
+                <div>
+                    <label class="font-semibold block mb-2">Quantité</label>
+                    <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                        @foreach($formats as $format)
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="formats[]" value="{{ $format }}" {{ in_array($format, request('formats', [])) ? 'checked' : '' }}>
+                                {{ $format }} ml
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- MILLÉSIME -->
+                <div>
+                    <label class="font-semibold block mb-2">Millésime</label>
+                    <div class="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                        @foreach($millesimes as $m)
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="millesimes[]" value="{{ $m }}" {{ in_array($m, request('millesimes', [])) ? 'checked' : '' }}>
+                                {{ $m }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="flex gap-3 pt-4 border-t">
+                    <a href="{{ url()->current() }}" class="w-1/2 text-center border py-3 rounded font-medium">
+                        Réinitialiser
+                    </a>
+
+                    <button type="submit" class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium">
+                        Appliquer
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="m-4">
