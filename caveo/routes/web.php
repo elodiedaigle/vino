@@ -68,6 +68,11 @@ Route::get('/', function () {
 Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
 
 /**
+ * Route vers la fiche détail
+ */
+Route::get('/bouteilles/{bouteille}', [BouteilleController::class, 'show'])->name('bouteilles.show');
+
+/**
  * Route de test temporaire pour valider la connexion à l'API SAQ
  * et l'importation d'un petit échantillon de produits.
  *
