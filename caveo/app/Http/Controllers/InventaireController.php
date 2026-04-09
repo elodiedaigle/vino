@@ -7,11 +7,19 @@ use App\Models\Inventaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Classe InventaireController
+ *
+ * Gère les opérations liées à l'inventaire d'un cellier :
+ * - ajout d'une bouteille
+ * - mise à jour de la quantité
+ * - suppression
+ */
 class InventaireController extends Controller
 {
     /**
      * Ajoute une bouteille à un cellier.
-     * Si la bouteille existe déjà dans ce cellier, sa quantité est augmentée.
+     * Si elle existe déjà, on augmente la quantité.
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Cellier $cellier
@@ -22,29 +30,23 @@ class InventaireController extends Controller
         $this->verifierProprietaireCellier($cellier);
 
         $validated = $request->validate([
-            'id_bouteille' => 'required|exists:bouteilles,id',
-            'quantite' => 'nullable|integer|min:1',
-            'description' => 'nullable|string',
+            'id_bouteille' => 'required|integer|exists:bouteilles,id',
+            'quantite' => 'required|integer|min:1|max:999',
         ], [
             'id_bouteille.required' => 'La bouteille est obligatoire.',
             'id_bouteille.exists' => 'La bouteille sélectionnée est invalide.',
+            'quantite.required' => 'La quantité est obligatoire.',
             'quantite.integer' => 'La quantité doit être un nombre entier.',
             'quantite.min' => 'La quantité doit être d’au moins 1.',
+            'quantite.max' => 'La quantité ne peut pas dépasser 999.',
         ]);
-
-        $quantiteAjout = $validated['quantite'] ?? 1;
 
         $inventaire = Inventaire::where('id_cellier', $cellier->id)
             ->where('id_bouteille', $validated['id_bouteille'])
             ->first();
 
         if ($inventaire) {
-            $inventaire->quantite += $quantiteAjout;
-
-            if (array_key_exists('description', $validated)) {
-                $inventaire->description = $validated['description'];
-            }
-
+            $inventaire->quantite += $validated['quantite'];
             $inventaire->save();
 
             return redirect()
@@ -55,8 +57,7 @@ class InventaireController extends Controller
         Inventaire::create([
             'id_cellier' => $cellier->id,
             'id_bouteille' => $validated['id_bouteille'],
-            'quantite' => $quantiteAjout,
-            'description' => $validated['description'] ?? null,
+            'quantite' => $validated['quantite'],
             'date_ajout' => now(),
         ]);
 
@@ -66,8 +67,8 @@ class InventaireController extends Controller
     }
 
     /**
-     * Met à jour une ligne d'inventaire existante.
-     * Si la quantité reçue est 0, la bouteille est retirée du cellier.
+     * Met à jour la quantité d'une bouteille.
+     * Si la quantité devient 0, la bouteille est supprimée.
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Inventaire $inventaire
@@ -78,16 +79,17 @@ class InventaireController extends Controller
         $this->verifierProprietaireInventaire($inventaire);
 
         $validated = $request->validate([
-            'quantite' => 'required|integer|min:0',
-            'description' => 'nullable|string',
+            'quantite' => 'required|integer|min:0|max:999',
         ], [
             'quantite.required' => 'La quantité est obligatoire.',
             'quantite.integer' => 'La quantité doit être un nombre entier.',
             'quantite.min' => 'La quantité ne peut pas être négative.',
+            'quantite.max' => 'La quantité ne peut pas dépasser 999.',
         ]);
 
         if ((int) $validated['quantite'] === 0) {
             $cellierId = $inventaire->id_cellier;
+
             $inventaire->delete();
 
             return redirect()
@@ -97,16 +99,15 @@ class InventaireController extends Controller
 
         $inventaire->update([
             'quantite' => $validated['quantite'],
-            'description' => $validated['description'] ?? null,
         ]);
 
         return redirect()
             ->route('celliers.show', $inventaire->id_cellier)
-            ->with('status', 'L’inventaire a été mis à jour avec succès.');
+            ->with('status', 'La quantité a été mise à jour.');
     }
 
     /**
-     * Supprime une ligne d'inventaire.
+     * Supprime une bouteille du cellier.
      *
      * @param \App\Models\Inventaire $inventaire
      * @return \Illuminate\Http\RedirectResponse
@@ -116,6 +117,7 @@ class InventaireController extends Controller
         $this->verifierProprietaireInventaire($inventaire);
 
         $cellierId = $inventaire->id_cellier;
+
         $inventaire->delete();
 
         return redirect()
@@ -141,7 +143,7 @@ class InventaireController extends Controller
     }
 
     /**
-     * Vérifie que la ligne d'inventaire appartient à un cellier de l'utilisateur connecté.
+     * Vérifie que l'inventaire appartient à un cellier de l'utilisateur.
      *
      * @param \App\Models\Inventaire $inventaire
      * @return void
