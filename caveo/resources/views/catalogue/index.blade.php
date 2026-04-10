@@ -148,64 +148,82 @@
     </div>
 
     <div class="m-4">
-        <p>Résultats {{ $bouteilles->firstItem() }}-{{ $bouteilles->lastItem() }} sur {{ $bouteilles->total() }}</p>
+        @if($bouteilles->total() > 0)
+            <p>
+                Résultats {{ $bouteilles->firstItem() }}-{{ $bouteilles->lastItem() }} sur {{ $bouteilles->total() }}
+            </p>
+        @else
+        <p></p>
+        @endif
     </div>
 
-    @foreach($bouteilles as $bouteille)
-        <div class="flex gap-6 m-4 mb-6 font-roboto border p-4 rounded">
-            <div class="w-[90px] flex justify-center items-center">
-                <img src="{{ $bouteille->image ?? asset('images/bouteille-vide.png') }}" alt="" class="w-auto h-[135px]">
-            </div>
-
-            <div class="flex flex-col justify-between flex-1">
-                <div>
-                    <h2 class="font-semibold text-lg">
-                        {{ $bouteille->nom }}
-                    </h2>
-
-                    <div class="flex items-center text-sm text-gray-600 space-x-2">
-                        <p>{{ $bouteille->pays ?? "" }}</p>
-                        <span>|</span>
-                        <p>{{ $bouteille->format ?? "" }} ml</p>
-                        <span>|</span>
-                        <p>{{ $bouteille->type ?? "" }}</p>
-                    </div>
-
-                    <p class="mt-2 font-medium mb-3">
-                        {{ $bouteille->prix ?? "Non spécifié" }} $
-                    </p>
+   @if($bouteilles->isEmpty())
+        <div class="mt-[30px] mb-[30px] ml-4 mr-4 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded text-center">
+            Aucune bouteille trouvée
+        </div>
+    @else
+        @foreach($bouteilles as $bouteille)
+            <div class="flex gap-6 m-4 mb-6 font-roboto border p-4 rounded">
+                <div class="w-[90px] flex justify-center items-center">
+                    <img src="{{ $bouteille->image ?? asset('images/bouteille-vide.png') }}" alt="" class="w-auto h-[135px]">
                 </div>
 
-                <a href="{{ route('bouteilles.show', $bouteille->id) }}?source=catalogue"
-                    class="px-4 py-2 bg-[#A83248] text-white rounded w-max">
-                    Détail
-                </a>
+                <div class="flex flex-col justify-between flex-1">
+                    <div>
+                        <h2 class="font-semibold text-lg">
+                            {{ $bouteille->nom }}
+                        </h2>
+
+                        <div class="flex items-center text-sm text-gray-600 space-x-2">
+                            <p>{{ $bouteille->pays ?? "" }}</p>
+                            <span>|</span>
+                            <p>{{ $bouteille->format ?? "" }} ml</p>
+                            <span>|</span>
+                            <p>{{ $bouteille->type ?? "" }}</p>
+                        </div>
+
+                        <p class="mt-2 font-medium mb-3">
+                            {{ $bouteille->prix ?? "Non spécifié" }} $
+                        </p>
+                    </div>
+
+                    <a href="{{ route('bouteilles.show', $bouteille->id) }}?source=catalogue"
+                        class="px-4 py-2 bg-[#A83248] text-white rounded w-max">
+                        Détail
+                    </a>
+                </div>
             </div>
+        @endforeach
+    @endif
+
+    @if($bouteilles->total() > 0)
+        <div class="flex justify-between items-center mx-auto my-5 mb-24">
+            @if ($bouteilles->onFirstPage())
+                <span>
+                    <img src="{{ asset('images/fleches/gauche-gris.svg') }}" class="w-14" alt="gauche bloqué">
+                </span>
+            @else
+                <a href="{{ $bouteilles->previousPageUrl() }}">
+                    <img src="{{ asset('images/fleches/gauche-rouge.svg') }}" class="w-14" alt="gauche">
+                </a>
+            @endif
+
+                <p>
+                    Résultats {{ $bouteilles->firstItem() }}-{{ $bouteilles->lastItem() }} sur {{ $bouteilles->total() }}
+                </p>
+
+            @if ($bouteilles->hasMorePages())
+                <a href="{{ $bouteilles->nextPageUrl() }}">
+                    <img src="{{ asset('images/fleches/droit-rouge.svg') }}" class="w-14" alt="droite">
+                </a>
+            @else
+                <span>
+                    <img src="{{ asset('images/fleches/droit-gris.svg') }}" class="w-14" alt="droite bloqué">
+                </span>
+            @endif
         </div>
-    @endforeach
-
-    <div class="flex justify-between items-center mx-auto my-5 mb-24">
-        @if ($bouteilles->onFirstPage())
-            <span>
-                <img src="{{ asset('images/fleches/gauche-gris.svg') }}" class="w-14" alt="gauche bloqué">
-            </span>
-        @else
-            <a href="{{ $bouteilles->previousPageUrl() }}">
-                <img src="{{ asset('images/fleches/gauche-rouge.svg') }}" class="w-14" alt="gauche">
-            </a>
-        @endif
-
-        <p>Résultats {{ $bouteilles->firstItem() }}-{{ $bouteilles->lastItem() }} sur {{ $bouteilles->total() }}</p>
-
-        @if ($bouteilles->hasMorePages())
-            <a href="{{ $bouteilles->nextPageUrl() }}">
-                <img src="{{ asset('images/fleches/droit-rouge.svg') }}" class="w-14" alt="droite">
-            </a>
-        @else
-            <span>
-                <img src="{{ asset('images/fleches/droit-gris.svg') }}" class="w-14" alt="droite bloqué">
-            </span>
-        @endif
-    </div>
+    @else
+        <p></p>
+    @endif
 
 @endsection
