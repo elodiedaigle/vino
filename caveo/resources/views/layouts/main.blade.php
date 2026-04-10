@@ -30,7 +30,7 @@
         <footer
             class="bg-[#FCF8F7] text-black fixed bottom-3 left-3 right-3 rounded-xl shadow-2xl ring-1 ring-gray-300 py-2">
             <div class="flex justify-around text-center">
-                <a href="{{ route('accueil') }}" class="flex flex-col items-center gap-1 px-3 py-1">
+                <a href="{{ route('accueil') }}" class="flex flex-col items-center gap-1 px-3 py-1 invisible">
                     <img src="{{ request()->routeIs('accueil')
             ? asset('images/icons/home-actif.svg')
             : asset('images/icons/home-inactif.svg') }}" alt="Explorer" class="w-6 h-6 object-contain">
@@ -44,7 +44,7 @@
                     <p class="text-sm font-roboto font-medium">Cellier</p>
                 </a>
 
-                <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
+                <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 invisible">
                     <img src="{{ asset('images/icons/ajouter-inactif.svg') }}" alt="Ajouter" class="w-6 h-6">
                     <p class="text-sm font-roboto font-medium">Ajouter</p>
                 </a>
@@ -59,7 +59,7 @@
                 <p class="text-sm font-roboto font-medium">Bouteilles</p>
             </a>
 
-                <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
+                <a href="#" class="flex flex-col items-center gap-1 px-3 py-1 invisible">
                     <img src="{{ asset('images/icons/profil-inactif.svg') }}" alt="Profil" class="w-6 h-6">
                     <p class="text-sm font-roboto font-medium">Profil</p>
                 </a>
