@@ -14,6 +14,7 @@ class Bouteille extends Model
     protected $fillable = [
         'code_saq',
         'nom',
+        'description',
         'type',
         'pays',
         'cepage',

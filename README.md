@@ -4,6 +4,8 @@ Branche feature catalogue
 
 Branche feature connexion utilisateur
 
+Branche feature cellier
+
 ### Auteurs
 
 Elodie Buczkowski
