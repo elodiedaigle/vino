@@ -87,16 +87,6 @@ class InventaireController extends Controller
             'quantite.max' => 'La quantité ne peut pas dépasser 999.',
         ]);
 
-        if ((int) $validated['quantite'] === 0) {
-            $cellierId = $inventaire->id_cellier;
-
-            $inventaire->delete();
-
-            return redirect()
-                ->route('celliers.show', $cellierId)
-                ->with('status', 'La bouteille a été retirée du cellier.');
-        }
-
         $inventaire->update([
             'quantite' => $validated['quantite'],
         ]);
