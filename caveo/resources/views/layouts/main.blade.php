@@ -35,7 +35,7 @@
                             : asset('images/icons/home-inactif.svg') }}"
                     alt="Explorer"
                     class="w-6 h-6 object-contain">
-                <p class="text-base font-roboto font-medium">Accueil</p>
+                <p class="text-sm font-roboto font-medium">Accueil</p>
             </a>
 
             <a href="{{ route('celliers.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
@@ -45,12 +45,12 @@
                 : asset('images/icons/bouteille-inactif.svg') }}"
                     alt="Cellier"
                     class="w-6 h-6">
-                <p class="text-base font-roboto font-medium">Cellier</p>
+                <p class="text-sm font-roboto font-medium">Cellier</p>
             </a>
 
             <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
                 <img src="{{ asset('images/icons/ajouter-inactif.svg') }}" alt="Ajouter" class="w-6 h-6">
-                <p class="text-base font-roboto font-medium">Ajouter</p>
+                <p class="text-sm font-roboto font-medium">Ajouter</p>
             </a>
 
             <a href="{{ route('catalogue.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
@@ -60,12 +60,12 @@
                             : asset('images/icons/loop-inactif.svg') }}"
                     alt="Explorer"
                     class="w-6 h-6 object-contain">
-                <p class="text-base font-roboto font-medium">Explorer</p>
+                <p class="text-sm font-roboto font-medium">Explorer</p>
             </a>
 
             <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
                 <img src="{{ asset('images/icons/profil-inactif.svg') }}" alt="Profil" class="w-6 h-6">
-                <p class="text-base font-roboto font-medium">Profil</p>
+                <p class="text-sm font-roboto font-medium">Profil</p>
             </a>
         </div>
     </footer>
