@@ -78,27 +78,27 @@ class CatalogueController extends Controller
             ->values();
 
         // FORMATS (choix unique)
-        $selectedFormats = request('formats', null); // Use null instead of array
+        $selectedFormats = request('formats', null);
         $formats = Bouteille::whereNotNull('format')
             ->distinct()
             ->orderByRaw('CAST(format AS UNSIGNED) ASC')
             ->pluck('format')
             ->sortBy(function ($f) use ($selectedFormats) {
                 return [
-                    $f != $selectedFormats, // Sort selected format to the top
+                    $f != $selectedFormats,
                     (int) $f
                 ];
             })
             ->values();
 
         // MILLÉSIMES (choix unique)
-        $selectedMillesimes = request('millesimes', null); // Use null instead of array
+        $selectedMillesimes = request('millesimes', null);
         $millesimes = Bouteille::whereNotNull('millesime')
             ->distinct()
             ->pluck('millesime')
             ->sortBy(function ($m) use ($selectedMillesimes) {
                 return [
-                    $m != $selectedMillesimes, // Sort selected millesime to the top
+                    $m != $selectedMillesimes,
                     $m
                 ];
             })
