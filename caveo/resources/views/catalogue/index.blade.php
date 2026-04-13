@@ -7,6 +7,7 @@
 <script type="module" src="{{ asset('js/cellier-overlay.js') }}"></script>
 <script type='module' src="{{ asset('js/recherche.js') }}"></script>
 <script type='module' src="{{ asset('js/renitialiser-bouton.js') }}"></script>
+<script type='module' src="{{ asset('js/modale-liste-achat.js') }}"></script>
 
 <form method="GET" action="{{ url()->current() }}" id="search-form">
     <div class="m-4">
@@ -201,16 +202,17 @@
             @endif
 
             @if($listes->isNotEmpty())
-            <a href="#"
-                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
-                title="Ajouter à la liste d'achat">
-                <img src="{{ asset('images/icons/liste.svg') }}" alt="Ajouter à la liste d'achat" class="w-6 h-6">
-            </a>
+            <button type="button"
+                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 openAddToListeModal"
+                data-bouteille-id="{{ $bouteille->id }}"
+                data-bouteille-nom="{{ $bouteille->nom }}">
+                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
+            </button>
             @else
             <a href="{{ route('achat.create') }}"
                 class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
-                title="Ajouter à la liste d'achat">
-                <img src="{{ asset('images/icons/liste.svg') }}" alt="Créer une liste d'achat" class="w-6 h-6">
+                title="Créer une liste d'achat">
+                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
             </a>
             @endif
         </div>
@@ -345,7 +347,46 @@
         </form>
     </div>
 </div>
-
 @endif
+
+<div id="addToListeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded w-[400px]">
+
+        <h2 class="text-lg font-semibold mb-4">Ajouter à une liste d'achat</h2>
+
+        <form method="POST" id="addToListeForm">
+            @csrf
+
+            <input type="hidden" name="id_bouteille" id="modal_bouteille_id">
+
+            <!-- Liste -->
+            <label class="block mb-2">Liste d'achat</label>
+            <select name="liste_id" id="modal_liste_id" class="w-full border rounded p-2 mb-4">
+                @foreach($listes as $liste)
+                    <option value="{{ $liste->id }}">{{ $liste->nom }}</option>
+                @endforeach
+            </select>
+
+            <!-- Quantité -->
+            <label class="block mb-2">Quantité</label>
+            <input type="number" name="quantite" value="1" min="1"
+                class="w-full border rounded p-2 mb-4">
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-2">
+                <button type="button" id="closeModal"
+                    class="px-4 py-2 bg-gray-200 rounded">
+                    Annuler
+                </button>
+
+                <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded">
+                    Ajouter
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
 
 @endsection
