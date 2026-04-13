@@ -6,6 +6,7 @@ use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CellierController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\InventaireSaqController;
+use App\Http\Controllers\ListeAchatController;
 use App\Http\Controllers\RegisterController;
 use App\Models\Bouteille;
 use Illuminate\Support\Facades\Http;
@@ -93,13 +94,22 @@ Route::middleware('auth')->group(function () {
    * Supprime une ligne d'inventaire.
    */
   Route::delete('/inventaires/{inventaire}', [InventaireController::class, 'destroy'])
-    ->name('inventaires.destroy');
+    ->name('inventaires.destroy'); 
 
   /**
    * Déclenche la mise à jour de l'inventaire SAQ.
    */
   Route::post('/admin/saq/update', [InventaireSaqController::class, 'mettreAJour'])
     ->name('admin.saq.update');
+
+
+
+  /**
+   *  Retourne la page de la liste d'achat
+   */   
+  Route::get('/achat', [ListeAchatController::class, 'index'])->name('achat.index');
+
+
 });
 
 /**
