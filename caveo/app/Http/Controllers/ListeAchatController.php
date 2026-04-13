@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ListeAchat;
+use App\Models\Bouteille;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -131,5 +132,16 @@ class ListeAchatController extends Controller
         );
 
         return back();
+    }
+
+    public function removeBouteille(ListeAchat $liste, Bouteille $bouteille)
+    {
+        if ($liste->id_utilisateur !== auth()->id()) {
+            abort(403);
+        }
+
+        $liste->bouteilles()->detach($bouteille->id);
+
+        return back()->with('success', 'Bouteille retirée de la liste.');
     }
 }
