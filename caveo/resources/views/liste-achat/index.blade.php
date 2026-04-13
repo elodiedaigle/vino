@@ -100,7 +100,7 @@
                             <span class="text-sm text-gray-600 whitespace-nowrap">
                                 x{{ $bouteille->pivot->quantite }}
                             </span>
-                            <form method="POST" action="">
+                            <form method="POST" action="{{ route('achat.bouteilles.destroy', [$liste->id, $bouteille->id]) }}">
                                 @csrf
                                 @method('DELETE')
 
