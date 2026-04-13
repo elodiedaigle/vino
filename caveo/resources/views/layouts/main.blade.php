@@ -56,8 +56,10 @@
                 <p class="text-sm font-roboto font-medium">Bouteilles</p>
             </a>
 
-            <a href="#" class="flex flex-col items-center gap-1 px-3 py-1">
-                <img src="{{ asset('images/icons/liste.svg') }}" alt="Ajouter" class="w-6 h-6">
+            <a href="{{ route('achat.index') }}" class="flex flex-col items-center gap-1 px-3 py-1">
+                <img src="{{ request()->routeIs('achat.index') 
+                            ? asset('images/icons/liste-actif.svg') 
+                            : asset('images/icons/liste.svg') }}" alt="Liste achat" class="w-6 h-6">
                 <p class="text-sm font-roboto font-medium wrap">Liste d'achat</p>
             </a>
 
