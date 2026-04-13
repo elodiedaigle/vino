@@ -46,4 +46,26 @@ class ListeAchatController extends Controller
         return redirect()
             ->route('achat.index');
     }
+
+    public function destroy(ListeAchat $liste)
+    {
+        $this->verifierProprietaire($liste);
+
+        $liste->delete();
+
+        return redirect()
+            ->route('achat.index')
+            ->with('status', 'La liste d\'achat a été supprimé avec succès.');
+    }
+
+    private function verifierProprietaire(ListeAchat $liste): void
+    {
+        $utilisateur = Auth::user();
+
+        abort_if(
+            $liste->id_utilisateur !== $utilisateur->id,
+            403,
+            'Accès non autorisé à cette liste d\'achat.'
+        );
+    }
 }
