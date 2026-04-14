@@ -135,6 +135,9 @@ Route::middleware('auth')->group(function () {
 
   Route::post('/achat/{liste}/bouteilles', [ListeAchatController::class, 'addBouteille'])->name('achat.bouteilles.add');
   Route::delete('/achat/{liste}/bouteilles/{bouteille}', [ListeAchatController::class, 'removeBouteille'])->name('achat.bouteilles.destroy');
+  
+  Route::get('/profil', [UtilisateurController::class, 'show'])->name('profil.show');
+  Route::get('/profil/edit', [UtilisateurController::class, 'edit'])->name('profil.edit');
 });
 
 /**
