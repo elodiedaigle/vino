@@ -124,6 +124,12 @@ class InventaireController extends Controller
             'quantite' => $validated['quantite'],
         ]);
 
+        if ($request->input('source_page') === 'bouteille') {
+            return redirect()->to(
+                route('bouteilles.show', $request->input('id_bouteille')) . '?source=cellier&inventaire=' . $inventaire->id)
+                    ->with('status', 'La quantité a été mise à jour.');
+        }
+
         return redirect()
             ->route('celliers.show', $inventaire->id_cellier)
             ->with('status', 'La quantité a été mise à jour.');
@@ -135,7 +141,7 @@ class InventaireController extends Controller
      * @param \App\Models\Inventaire $inventaire
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Inventaire $inventaire)
+    public function destroy(Request $request, Inventaire $inventaire)
     {
         $this->verifierProprietaireInventaire($inventaire);
 
