@@ -7,6 +7,7 @@
 <script type="module" src="{{ asset('js/cellier-overlay.js') }}"></script>
 <script type='module' src="{{ asset('js/recherche.js') }}"></script>
 <script type='module' src="{{ asset('js/renitialiser-bouton.js') }}"></script>
+<script type='module' src="{{ asset('js/modale-liste-achat.js') }}"></script>
 
 <form method="GET" action="{{ url()->current() }}" id="search-form">
     <div class="m-4">
@@ -199,6 +200,21 @@
                 Créer un cellier
             </a>
             @endif
+
+            @if($listes->isNotEmpty())
+            <button type="button"
+                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 openAddToListeModal"
+                data-bouteille-id="{{ $bouteille->id }}"
+                data-bouteille-nom="{{ $bouteille->nom }}">
+                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
+            </button>
+            @else
+            <a href="{{ route('achat.create') }}"
+                class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 flex items-center gap-2 w-max"
+                title="Créer une liste d'achat">
+                <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
+            </a>
+            @endif
         </div>
     </div>
 </div>
@@ -236,102 +252,169 @@
 @endif
 
 @if($celliers->isNotEmpty())
-{{-- Overlay modale --}}
-<div id="cellierOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
-{{-- Modal ajout au cellier --}}
-<div id="addToCellierModal" class="fixed inset-0 hidden z-50 flex items-center justify-center px-4">
-    <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-5">
+<div id="addToCellierModal" class="fixed inset-0 hidden z-50">
+    <div id="cellierOverlay"
+        class="absolute inset-0 bg-black bg-opacity-50">
+    </div>
+    <div class="relative flex items-center justify-center min-h-screen px-4">
 
-        <h2 class="text-lg font-semibold mb-4 text-center">
-            Ajouter au cellier
-        </h2>
+        <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-5">
 
-        <form method="POST" id="addToCellierForm">
-            @csrf
+            <h2 class="text-lg font-semibold mb-4 text-center">
+                Ajouter au cellier
+            </h2>
 
-            {{-- Bouteille --}}
-            <input type="hidden" name="id_bouteille" id="modalBouteilleId">
+            <form method="POST" id="addToCellierForm">
+                @csrf
 
-            <p class="text-center mb-4 font-medium" id="modalBouteilleNom"></p>
+                {{-- Bouteille --}}
+                <input type="hidden" name="id_bouteille" id="modalBouteilleId">
 
-            {{-- Choix cellier --}}
-            <div class="mb-4">
-                <label class="block mb-1 text-sm font-medium">
-                    Choisir un cellier
-                </label>
+                <p class="text-center mb-4 font-medium" id="modalBouteilleNom"></p>
 
-                <select id="modalCellierSelect"
-                    class="w-full border rounded px-3 py-2">
-                    @foreach($celliers as $cellier)
-                    <option value="{{ $cellier->id }}">
-                        {{ $cellier->nom }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                {{-- Cellier --}}
+                <div class="mb-4">
+                    <label class="block mb-1 text-sm font-medium">
+                        Choisir un cellier
+                    </label>
 
-            {{-- Quantité (VERSION + / -) --}}
-            <div class="mb-5">
-                <label class="block mb-2 text-sm font-medium">
-                    Quantité
-                </label>
+                    <select id="modalCellierSelect"
+                        class="w-full border rounded px-3 py-2">
 
-                <div class="flex items-center justify-between w-full">
+                        @foreach($celliers as $cellier)
+                            <option value="{{ $cellier->id }}">
+                                {{ $cellier->nom }}
+                            </option>
+                        @endforeach
 
-                    {{-- Moins --}}
-                    <button type="button"
-                        class="w-1/3 flex items-center justify-center py-5"
-                        aria-label="Diminuer la quantité"
-                        title="Diminuer la quantité">
-                        <img src="{{ asset('images/icons/cercle-moins.svg') }}"
-                            alt="moins"
-                            aria-hidden="true"
-                            class="w-10 h-10">
-                    </button>
-
-                    {{-- Quantité affichée --}}
-                    <div class="w-1/3 text-center">
-                        <span id="modalQuantiteDisplay" class="text-2xl font-semibold">
-                            1
-                        </span>
-                    </div>
-
-                    {{-- Plus --}}
-                    <button type="button"
-                        class="w-1/3 flex items-center justify-center py-5"
-                        aria-label="Augmenter la quantité"
-                        title="Augmenter la quantité">
-                        <img src="{{ asset('images/icons/cercle-plus.svg') }}"
-                            alt="plus"
-                            aria-hidden="true"
-                            class="w-10 h-10">
-                    </button>
-
+                    </select>
                 </div>
 
-                {{-- Valeur envoyée --}}
-                <input type="hidden" name="quantite" id="modalQuantite" value="1">
-            </div>
+                {{-- Quantité --}}
+                <div class="mb-5">
+                    <label class="block mb-2 text-sm font-medium">
+                        Quantité
+                    </label>
 
-            {{-- Boutons --}}
-            <div class="flex gap-3">
-                <button type="submit"
-                    class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium">
-                    Ajouter
-                </button>
+                    <div class="flex items-center justify-between w-full">
 
-                <button type="button"
-                    id="closeModal"
-                    class="w-1/2 border py-3 rounded font-medium">
-                    Annuler
-                </button>
-            </div>
+                        <button type="button"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-moins.svg') }}" class="w-10 h-10">
+                        </button>
 
-        </form>
+                        <div class="w-1/3 text-center">
+                            <span id="modalQuantiteDisplay" class="text-2xl font-semibold">1</span>
+                        </div>
+
+                        <button type="button"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-plus.svg') }}" class="w-10 h-10">
+                        </button>
+
+                    </div>
+
+                    <input type="hidden" name="quantite" id="modalQuantite" value="1">
+                </div>
+
+                {{-- Actions --}}
+                <div class="flex gap-3">
+
+                    <button type="submit"
+                        class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium">
+                        Ajouter
+                    </button>
+
+                    <button type="button"
+                        id="closeCellierModal"
+                        class="w-1/2 border py-3 rounded font-medium">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 @endif
+
+<div id="addToListeModal" class="fixed inset-0 hidden z-50">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative flex items-center justify-center min-h-screen px-4">
+
+        <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-5">
+
+            <h2 class="text-lg font-semibold mb-4 text-center">
+                Ajouter à une liste d'achat
+            </h2>
+
+            <form method="POST" id="addToListeForm">
+                @csrf
+
+                <input type="hidden" name="id_bouteille" id="modal_bouteille_id">
+
+                <!-- Liste -->
+                <div class="mb-4">
+                    <label class="block mb-1 text-sm font-medium">
+                        Choisir une liste
+                    </label>
+
+                    <select name="liste_id"
+                        id="modal_liste_id"
+                        class="w-full border rounded px-3 py-2">
+
+                        @foreach($listes as $liste)
+                            <option value="{{ $liste->id }}">
+                                {{ $liste->nom }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <!-- Quantité -->
+                <div class="mb-5">
+                    <label class="block mb-2 text-sm font-medium">
+                        Quantité
+                    </label>
+
+                    <div class="flex items-center justify-between w-full">
+
+                        <button type="button" id="minusQuantite"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-moins.svg') }}" class="w-10 h-10">
+                        </button>
+
+                        <div class="w-1/3 text-center">
+                            <span id="modalQuantiteDisplay" class="text-2xl font-semibold">1</span>
+                        </div>
+
+                        <button type="button" id="plusQuantite"
+                            class="w-1/3 flex justify-center py-5">
+                            <img src="{{ asset('images/icons/cercle-plus.svg') }}" class="w-10 h-10">
+                        </button>
+
+                    </div>
+
+                    <input type="hidden" name="quantite" id="modalQuantite" value="1">
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <button type="submit"
+                        class="w-1/2 bg-[#A83248] text-white py-3 rounded font-medium">
+                        Ajouter
+                    </button>
+
+                    <button type="button"
+                        id="closeModal"
+                        class="w-1/2 border py-3 rounded font-medium">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection

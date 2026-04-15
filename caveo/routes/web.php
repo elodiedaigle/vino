@@ -6,6 +6,7 @@ use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CellierController;
 use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\InventaireSaqController;
+use App\Http\Controllers\ListeAchatController;
 use App\Http\Controllers\RegisterController;
 use App\Models\Bouteille;
 use Illuminate\Support\Facades\Http;
@@ -93,13 +94,32 @@ Route::middleware('auth')->group(function () {
    * Supprime une ligne d'inventaire.
    */
   Route::delete('/inventaires/{inventaire}', [InventaireController::class, 'destroy'])
-    ->name('inventaires.destroy');
+    ->name('inventaires.destroy'); 
 
   /**
    * Déclenche la mise à jour de l'inventaire SAQ.
    */
   Route::post('/admin/saq/update', [InventaireSaqController::class, 'mettreAJour'])
     ->name('admin.saq.update');
+
+
+
+  /**
+   *  Retourne la page de la liste d'achat
+   */   
+  Route::get('/achat', [ListeAchatController::class, 'index'])->name('achat.index');
+
+  Route::get('/achat/creation', [ListeAchatController::class, 'create'])->name('achat.create');
+  Route::post('/achat/creation', [ListeAchatController::class, 'store'])->name('achat.store');
+
+  Route::get('/achat/{liste}', [ListeAchatController::class, 'edit'])->name('achat.edit');
+  Route::put('/achat/{liste}', [ListeAchatController::class, 'update'])->name('achat.update');
+
+  Route::delete('/achat/{liste}', [ListeAchatController::class, 'destroy'])->name('achat.destroy'); 
+  
+  Route::post('/achat/{liste}/bouteilles', [ListeAchatController::class, 'addBouteille'])->name('achat.bouteilles.add');
+  Route::delete('/achat/{liste}/bouteilles/{bouteille}', [ListeAchatController::class, 'removeBouteille'])->name('achat.bouteilles.destroy');
+
 });
 
 /**
