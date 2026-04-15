@@ -3,6 +3,9 @@
 @section('title', 'Modifier un utilisateur')
 
 @section('fleche')
+
+<script src="{{ asset('js/selection-role.js') }}"></script>
+
 <a href="{{ route('admin.utilisateurs.index') }}" class="text-white text-2xl leading-none" aria-label="Retour">
     <img src="/images/fleches/gauche-blanc.svg" alt="Flèche de retour" class="w-10 h-10">
 </a>
@@ -40,7 +43,7 @@
                     id="prenom"
                     name="prenom"
                     value="{{ old('prenom', $utilisateur->prenom) }}"
-                    maxlength="55"
+                    maxlength="35"
                     required
                     placeholder="Ex. Marie"
                     class="w-full border rounded px-3 py-3 @error('prenom') border-red-500 @enderror">
@@ -59,7 +62,7 @@
                     id="nom"
                     name="nom"
                     value="{{ old('nom', $utilisateur->nom) }}"
-                    maxlength="55"
+                    maxlength="35"
                     required
                     placeholder="Ex. Dupont"
                     class="w-full border rounded px-3 py-3 @error('nom') border-red-500 @enderror">
@@ -68,21 +71,21 @@
                 @enderror
             </div>
 
-            <!-- Email -->
+            <!-- Courriel -->
             <div>
-                <label for="email" class="block mb-2 font-semibold text-[#1A1A1A]">
+                <label for="courriel" class="block mb-2 font-semibold text-[#1A1A1A]">
                     Adresse courriel
                 </label>
                 <input
                     type="email"
-                    id="email"
-                    name="email"
-                    value="{{ old('email', $utilisateur->email) }}"
+                    id="courriel"
+                    name="courriel"
+                    value="{{ old('courriel', $utilisateur->email) }}"
                     maxlength="255"
                     required
-                    placeholder="Ex. marie.dupont@example.com"
-                    class="w-full border rounded px-3 py-3 @error('email') border-red-500 @enderror">
-                @error('email')
+                    placeholder="exemple@courriel.com"
+                    class="w-full border rounded px-3 py-3 @error('courriel') border-red-500 @enderror">
+                @error('courriel')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -126,23 +129,4 @@
         </div>
     </form>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const roleCheckboxes = document.querySelectorAll('.role-checkbox');
-    
-    roleCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                roleCheckboxes.forEach(cb => {
-                    if (cb !== this) {
-                        cb.checked = false;
-                    }
-                });
-            }
-        });
-    });
-});
-</script>
-
 @endsection

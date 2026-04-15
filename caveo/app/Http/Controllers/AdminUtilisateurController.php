@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUtilisateurRequest;
 use App\Models\Role;
 use App\Models\Utilisateur;
 use Illuminate\Http\Request;
@@ -92,31 +93,26 @@ class AdminUtilisateurController extends Controller
     /**
      * Met à jour les informations d'un utilisateur.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\UpdateUtilisateurRequest $request
      * @param \App\Models\Utilisateur $utilisateur
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Utilisateur $utilisateur)
+    public function update(UpdateUtilisateurRequest $request, Utilisateur $utilisateur)
     {
         /**
-         * Validation des données.
+         * La validation est gérée automatiquement par UpdateUtilisateurRequest.
+         * Récupération des données validées.
          */
-        $validated = $request->validate([
-            'prenom' => 'required|string|max:55',
-            'nom' => 'required|string|max:55',
-            'email' => 'required|email|max:255|unique:utilisateurs,email,' . $utilisateur->id,
-            'id_role' => 'required|exists:roles,id',
-        ]);
+        $validated = $request->validated();
 
-        /**
-         * Mise à jour de l'utilisateur.
-         */
-        $utilisateur->update([
-            'prenom' => $validated['prenom'],
-            'nom' => $validated['nom'],
-            'email' => $validated['email'],
-            'id_role' => $validated['id_role'],
-        ]);
+        
+        if (isset($validated['courriel'])) {
+            $validated['email'] = $validated['courriel'];
+            unset($validated['courriel']);
+        }
+
+        
+        $utilisateur->update($validated);
 
         return redirect()
             ->route('admin.utilisateurs.index')
