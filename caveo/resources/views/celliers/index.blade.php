@@ -7,6 +7,7 @@
 <script type="module" src="{{ asset('js/confirmation-suppression.js') }}"></script>
 
 <div class="m-4 flex items-start justify-between gap-4">
+
     <div>
         <h1 class="text-3xl text-[#7A1E2E]" style="font-family: 'Crimson Text', serif;">
             Mes celliers
@@ -43,7 +44,9 @@
 
     <div class="flex flex-col justify-between flex-1 min-w-0">
         <div>
-            <h2 class="font-semibold text-lg break-words"></h2>
+            <h2 class="font-semibold text-lg break-words">
+                {{ $cellier->nom }}
+            </h2>
 
             <div class="flex items-center text-sm text-gray-600 space-x-2 flex-wrap">
                 @if(!empty($cellier->emplacement))
