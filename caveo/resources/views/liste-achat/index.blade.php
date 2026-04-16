@@ -11,7 +11,6 @@
 @section('content')
 <script type="module" src="{{ asset('js/liste-dropdown.js') }}"></script>
 <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
-<script type="module" src="{{ asset('js/confirmation-suppression.js') }}"></script>
 
 <div class="m-4 flex items-start justify-between gap-4">
     <div>
@@ -73,7 +72,9 @@
                     @method('DELETE')
 
                     <button type="submit"
-                        class="bouton-supprimer w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100 data-confirm=" Supprimer cette liste ?" aria-label="Supprimer la liste">
+                        data-confirm="Supprimer cette liste ?"
+                        class="bouton-supprimer w-10 h-10 flex items-center justify-center border rounded hover:bg-gray-100"
+                        aria-label="Supprimer la liste">
                         <img src="{{ asset('images/icons/poubelle.svg') }}" class="w-6 h-6">
                     </button>
                 </form>
@@ -122,7 +123,9 @@
                             @method('DELETE')
 
                             <button type="submit"
-                                class="bouton-supprimer" w-5 h-5 flex items-center justify-center rounded hover:bg-gray-100 data-confirm=" Supprimer cette bouteille ?" aria-label="Supprimer la bouteille">
+                                data-confirm="Supprimer cette bouteille ?"
+                                class="bouton-supprimer w-5 h-5 flex items-center justify-center rounded hover:bg-gray-100"
+                                aria-label="Supprimer la bouteille">
                                 <img src="{{ asset('images/symbole/symbole-x-gris.svg') }}" class="w-4 h-4">
                             </button>
                         </form>
