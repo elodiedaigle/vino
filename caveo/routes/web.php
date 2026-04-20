@@ -10,8 +10,6 @@ use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\ListeAchatController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UtilisateurController;
-use App\Models\Bouteille;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*

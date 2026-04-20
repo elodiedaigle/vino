@@ -146,44 +146,44 @@
 
     <!-- Recherche -->
     @if(request('recherche'))
-        <p>
-            <strong>Recherche en cours :</strong> "{{ request('recherche') }}"
-        </p>
+    <p>
+        <strong>Recherche en cours :</strong> "{{ request('recherche') }}"
+    </p>
     @endif
 
     <!-- Filtres -->
     @if(
-        request('tri_nom') ||
-        request('types') ||
-        request('pays') ||
-        request('formats') ||
-        request('millesimes')
+    request('tri_nom') ||
+    request('types') ||
+    request('pays') ||
+    request('formats') ||
+    request('millesimes')
     )
-        <p class="mt-1">
-            <strong>Filtres appliqués :</strong>
-        </p>
+    <p class="mt-1">
+        <strong>Filtres appliqués :</strong>
+    </p>
 
-        <ul class="ml-4 list-disc">
-            @if(request('tri_nom'))
-                <li>Tri : {{ request('tri_nom') }}</li>
-            @endif
+    <ul class="ml-4 list-disc">
+        @if(request('tri_nom'))
+        <li>Tri : {{ request('tri_nom') }}</li>
+        @endif
 
-            @if(request('types'))
-                <li>Type : {{ implode(', ', request('types')) }}</li>
-            @endif
+        @if(request('types'))
+        <li>Type : {{ implode(', ', request('types')) }}</li>
+        @endif
 
-            @if(request('pays'))
-                <li>Pays : {{ implode(', ', request('pays')) }}</li>
-            @endif
+        @if(request('pays'))
+        <li>Pays : {{ implode(', ', request('pays')) }}</li>
+        @endif
 
-            @if(request('formats'))
-                <li>Quantité : {{ request('formats') }} ml</li>
-            @endif
+        @if(request('formats'))
+        <li>Quantité : {{ request('formats') }} ml</li>
+        @endif
 
-            @if(request('millesimes'))
-                <li>Millésime : {{ request('millesimes') }}</li>
-            @endif
-        </ul>
+        @if(request('millesimes'))
+        <li>Millésime : {{ request('millesimes') }}</li>
+        @endif
+    </ul>
     @endif
 
 </div>
@@ -254,7 +254,9 @@
             <button type="button"
                 class="ml-auto px-2 py-2 border border-gray-300 rounded hover:bg-gray-100 openAddToListeModal"
                 data-bouteille-id="{{ $bouteille->id }}"
-                data-bouteille-nom="{{ $bouteille->nom }}">
+                data-bouteille-nom="{{ $bouteille->nom }}"
+                title="Ajouter à la liste d'achats"
+                aria-label="Ajouter à la liste d'achats">
                 <img src="{{ asset('images/icons/liste.svg') }}" class="w-6 h-6">
             </button>
             @else
