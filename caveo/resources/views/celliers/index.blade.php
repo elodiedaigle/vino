@@ -17,8 +17,8 @@
     </div>
 
     <a href="{{ route('celliers.create') }}"
-        class="bg-[#A83248] text-white px-4 py-3 rounded font-semibold whitespace-nowrap">
-        Nouveau
+        class="bg-[#A83248] text-white px-3 py-3 rounded font-semibold whitespace-nowrap">
+        <img src="{{ asset('images/symbole/ajouter-blanc.svg') }}" alt="Ajouter une liste d'achat" class="w-6 h-6">
     </a>
 </div>
 
