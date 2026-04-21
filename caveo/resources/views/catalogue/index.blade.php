@@ -229,9 +229,19 @@
                 ])->filter()->implode(' | ') }}
             </div>
 
-            <p class="mt-2 font-medium mb-3">
-                {{ $bouteille->prix ?? "Non spécifié" }} $
-            </p>
+                <p class="mt-2 font-medium mb-3">
+                    {{ $bouteille->prix ?? "Non spécifié" }} $
+                </p>
+            </div>
+
+            @if(optional(Auth::user()->role)->nom === 'admin')
+            <a href="{{ url('/admin/bouteilles/' . $bouteille->id . '/edit') }}"
+                class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 shrink-0"
+                title="Modifier la bouteille"
+                aria-label="Modifier la bouteille">
+                <img src="{{ asset('images/icons/crayon.svg') }}" alt="" aria-hidden="true" class="w-6 h-6">
+            </a>
+            @endif
         </div>
 
         <div class="flex gap-1 flex-wrap">
