@@ -64,7 +64,7 @@ class InventaireController extends Controller
             'date_ajout' => now(),
         ]);
 
-        return redirect()->back()->with('status', 'La bouteille a été ajoutée au cellier.');
+        return redirect($request->redirect_url)->with('status', 'La bouteille a été ajoutée au cellier.');
     }
 
     /**
