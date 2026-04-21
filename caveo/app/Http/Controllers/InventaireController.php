@@ -65,7 +65,7 @@ class InventaireController extends Controller
         ]);
 
         return redirect()
-            ->route('celliers.show', $cellier)
+            ->route('catalogue.index')
             ->with('status', 'La bouteille a été ajoutée au cellier.');
     }
 
