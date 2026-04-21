@@ -4,7 +4,7 @@
 @section('title', $cellier->nom)
 
 @section('fleche')
-<!-- Flèche de retour qui revient vers le cellier ou le catalogue selon la source -->
+<!-- Flèche de retour qui revient vers le cellier -->
 <a href="{{ route('celliers.index') }}" class="text-white text-2xl leading-none" aria-label="Retour">
     <img src="{{ asset('images/fleches/gauche-blanc.svg') }}" alt="Flèche de retour" class="w-10 h-10">
 </a>
