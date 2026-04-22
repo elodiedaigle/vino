@@ -25,12 +25,12 @@
 
                 <a href="{{ route('catalogue.index') }}"
                     class="px-3 py-2 rounded font-medium">
-                    <img src="{{ asset('images/icons/loop-actif.svg') }}" alt="">
+                    <img src="{{ asset('images/icons/loop-actif.svg') }}" alt="un icone de loupe pour envoyer au catalogue" title="Chercher une bouteille dans le catalogue">
                 </a>
 
                 <a href="{{ route('celliers.bouteilles.create', $cellier) }}"
                     class="bg-[#A83248] text-white px-4 py-3 rounded font-semibold">
-                    Ajouter bouteille non listée
+                    Ajouter une bouteille non listée
                 </a>
 
             </div>
