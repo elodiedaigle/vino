@@ -64,12 +64,6 @@
 </form>
 
 <div class="m-4 pb-24">
-    @if($utilisateurs->total() > 0)
-    <p class="text-sm text-[#1A1A1A] mb-4">
-        Résultats {{ $utilisateurs->firstItem() }}-{{ $utilisateurs->lastItem() }} sur {{ $utilisateurs->total() }}
-    </p>
-    @endif
-
     @if($utilisateurs->count() > 0)
         <div class="space-y-3 mb-6">
             @foreach($utilisateurs as $utilisateur)
@@ -99,11 +93,33 @@
         </div>
 
         <!-- Pagination -->
-        <div class="mt-6">
-            <div class="flex justify-center">
-                {{ $utilisateurs->links() }}
-            </div>
+        @if($utilisateurs->total() > 0)
+        <div class="flex justify-between items-center mx-auto my-5 mb-24">
+            @if ($utilisateurs->onFirstPage())
+            <span>
+                <img src="{{ asset('images/fleches/gauche-gris.svg') }}" class="w-14" alt="gauche bloqué">
+            </span>
+            @else
+            <a href="{{ $utilisateurs->previousPageUrl() }}">
+                <img src="{{ asset('images/fleches/gauche-rouge.svg') }}" class="w-14" alt="gauche">
+            </a>
+            @endif
+
+            <p>
+                Résultats {{ $utilisateurs->firstItem() }}-{{ $utilisateurs->lastItem() }} sur {{ $utilisateurs->total() }}
+            </p>
+
+            @if ($utilisateurs->hasMorePages())
+            <a href="{{ $utilisateurs->nextPageUrl() }}">
+                <img src="{{ asset('images/fleches/droit-rouge.svg') }}" class="w-14" alt="droite">
+            </a>
+            @else
+            <span>
+                <img src="{{ asset('images/fleches/droit-gris.svg') }}" class="w-14" alt="droite bloqué">
+            </span>
+            @endif
         </div>
+        @endif
 
     @else
         <!-- Aucun utilisateur trouvé -->

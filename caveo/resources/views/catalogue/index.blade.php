@@ -1,11 +1,13 @@
 @extends('layouts.main')
 @section('title', 'caveo')
 
+@if(optional(Auth::user()->role)->nom !== 'admin')
 @section('deconnexion')
 <a href="#" id="openDeconnexionModal" class="text-white text-2xl leading-none" aria-label="Deconnexion">
     <img src="/images/icons/deconnexion-blanc.svg" alt="Deconnexion" class="w-8 h-8">
 </a>
 @endsection
+@endif
 
 @section('content')
 
