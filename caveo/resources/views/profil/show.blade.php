@@ -8,7 +8,7 @@
 @endsection
     <script type="module" src="{{ asset('js/message-flash-auto.js') }}"></script>
     
-        <div class="min-h-[calc(100vh-90px)] flex flex-col justify-between py-6 px-4 sm:px-6 lg:px-8 pb-24">
+        <div class="min-h-[calc(100vh-90px)] overflow-hidden flex flex-col py-6 px-4 sm:px-6 lg:px-8 pb-24">
             <div>
                 <h1 class="text-3xl text-[#7A1E2E] text-center " style="font-family: 'Crimson Text', serif;">Mon Profil</h1>
                 <x-alerts />
@@ -45,13 +45,13 @@
                                 </a>
                             </div>
                 </div>
-                <div class="flex flex-col items-center ">
+                <div class="mt-auto pt-6 flex justify-center gap-3">
                     <form method="POST" action="{{ route('profil.destroy') }}" class="w-3/5 max-w-xs">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
                                 data-confirm="Êtes-vous sûr de supprimer votre compte ?"
-                                class="w-full  p-1 flex items-center justify-center border bg-white border-gray-300 rounded-md shadow text-gray-500"
+                                class="w-full  py-2 flex items-center justify-center border bg-white border-gray-300 rounded-md shadow text-gray-500"
                                 title="Êtes-vous sûr de supprimer votre compte"
                                 aria-label="Êtes-vous sûr de supprimer votre compte">
                                 Supprimer mon compte
