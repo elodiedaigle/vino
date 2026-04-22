@@ -22,7 +22,8 @@
 
     <a href="{{ route('achat.create') }}"
         class="bg-[#A83248] text-white px-3 py-3 rounded font-semibold whitespace-nowrap">
-        <img src="{{ asset('images/symbole/ajouter-blanc.svg') }}" alt="Ajouter une liste d'achat" class="w-6 h-6">
+        <img src="{{ asset('images/symbole/ajouter-blanc.svg') }}" alt="Ajouter une liste d'achat" class="w-6 h-6"
+            title="Ajouter une liste d'achat" aria-label="Ajouter une liste d'achat">
     </a>
 </div>
 
@@ -109,7 +110,7 @@
 
                             <div class="flex items-center gap-2">
                                 <button type="submit" name="action" value="decrement" class="w-3 h-5 flex items-center justify-center rounded text-lg">
-                                    <img src="{{ asset('images/symbole/diminuer-noir.svg') }}" alt="Diminuer">
+                                    <img src="{{ asset('images/symbole/diminuer-noir.svg') }}" alt="Diminuer" title="Diminuer" aria-label="Diminuer">
                                 </button>
 
                                 <!-- quantité -->
@@ -118,7 +119,7 @@
                                 </span>
 
                                 <button type="submit" name="action" value="increment" class="w-3 h-5 flex items-center justify-center rounded text-lg">
-                                    <img src="{{ asset('images/symbole/augmenter-noir.svg') }}" alt="Augmenter">
+                                    <img src="{{ asset('images/symbole/augmenter-noir.svg') }}" alt="Augmenter" title="Augmenter" aria-label="Augmenter">
                                 </button>
 
                             </div>
@@ -130,7 +131,7 @@
                             <button type="submit"
                                 data-confirm="Supprimer cette bouteille ?"
                                 class="bouton-supprimer w-5 h-5 flex items-center justify-center rounded hover:bg-gray-100"
-                                aria-label="Supprimer la bouteille">
+                                title="Supprimer la bouteille" aria-label="Supprimer la bouteille">
                                 <img src="{{ asset('images/symbole/symbole-x-gris.svg') }}" class="w-4 h-4">
                             </button>
                         </form>
