@@ -2,11 +2,19 @@
 
 @section('title', 'Caveo')
 
+
+@section('deconnexion')
+@auth
+<a href="#" id="openDeconnexionModal" class="text-white text-2xl leading-none" aria-label="Deconnexion">
+    <img src="/images/icons/deconnexion-blanc.svg" alt="Deconnexion" class="w-8 h-8">
+</a>
+@endauth
+@endsection
+
 @section('content')
 <section class="min-h-[calc(100vh-140px)] bg-[#F8F5F1] flex items-center justify-center px-6 py-10">
     <div class="w-full max-w-xl mx-auto text-center font-roboto">
 
-        {{-- Logo / nom --}}
         <div class="mb-8">
             <h1 class="text-5xl sm:text-6xl tracking-tight text-[#7A1E2E]"
                 style="font-family: 'Crimson Text', serif;">
@@ -14,7 +22,6 @@
             </h1>
         </div>
 
-        {{-- Slogan --}}
         <div class="mb-10">
             <p class="text-4xl sm:text-6xl leading-[0.95] tracking-tight text-[#1A1A1A] font-semibold">
                 Votre cave,
@@ -29,7 +36,6 @@
             </p>
         </div>
 
-        {{-- Actions --}}
         <div class="max-w-sm mx-auto space-y-3">
             @guest
             <a href="{{ route('inscription.form') }}"
